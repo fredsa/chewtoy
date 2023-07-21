@@ -56,24 +56,27 @@ color_bitmap = displayio.Bitmap(WIDTH, HEIGHT, 1)
 color_palette = displayio.Palette(1)
 color_palette[0] = 0xFFFFFF  # White
 
-bg_sprite = displayio.TileGrid(color_bitmap, pixel_shader=color_palette, x=0, y=0)
-group.append(bg_sprite)
+fullscreentilegrid = displayio.TileGrid(color_bitmap, pixel_shader=color_palette, x=0, y=0)
+group.append(fullscreentilegrid)
 
 # Draw a smaller inner rectangle
 inner_bitmap = displayio.Bitmap(WIDTH - BORDER * 2, HEIGHT - BORDER * 2, 1)
 inner_palette = displayio.Palette(1)
 inner_palette[0] = 0x000000  # Black
-inner_sprite = displayio.TileGrid(
+playfieldtilegrid = displayio.TileGrid(
     inner_bitmap, pixel_shader=inner_palette, x=BORDER, y=BORDER
 )
-group.append(inner_sprite)
+group.append(playfieldtilegrid)
 
-# Draw a label
-text = "Bounce!"
-textlabel = label.Label(
-    terminalio.FONT, text=text, color=0xFFFFFF, x=28, y=HEIGHT // 2 - 1
+score1label = label.Label(
+    terminalio.FONT, text="0", color=0xFFFFFF, x=WIDTH // 4, y=10
 )
-group.append(textlabel)
+group.append(score1label)
+
+score2label = label.Label(
+    terminalio.FONT, text="0", color=0xFFFFFF, x=WIDTH // 4 * 3, y=10
+)
+group.append(score2label)
 
 ballgroup = displayio.Group()
 group.append(ballgroup)
@@ -88,29 +91,41 @@ ballbitmap = displayio.Bitmap(ballsize, ballsize, numcolors)
 for i in range(0, ballsize * ballsize):
     ballbitmap[i] = 1
 
-tilegrid = displayio.TileGrid(ballbitmap, pixel_shader=palette, width=1, height=1, tile_width=ballsize, tile_height=ballsize)
-tilegrid[0] = 0
-ballgroup.append(tilegrid)
+playfieldtilegrid = displayio.TileGrid(ballbitmap, pixel_shader=palette, width=1, height=1, tile_width=ballsize, tile_height=ballsize)
+playfieldtilegrid[0] = 0
+ballgroup.append(playfieldtilegrid)
 
 x = float((WIDTH - ballsize) / 2)
 y = float((HEIGHT - ballsize) / 2)
 dx = 2.0
 dy = 1.0
+score1 = 0
+score2 = 0
+bouncecounter = 0
 while True:
     x += dx
     y += dy
     if x<0 or x>WIDTH-ballsize:
+        if x<0:
+            score2 += 1
+        else:
+            score1 += 1
         dx = -dx
         x += dx
-        dx = dx/abs(dx) * (random.random() * 2 + 1)
+        dx = dx/abs(dx) * (random.random() * 1 + 2)
+        bouncecounter = 3
     if y<0 or y>HEIGHT-ballsize:
         dy = -dy
         y += dy
-        dy = dy/abs(dy) * (random.random() * 2 + 1)
+        dy = dy/abs(dy) * (random.random() * 1 + 2)
     ballgroup.x = round(x)
     ballgroup.y = round(y)
     # print(f"x={x} y={y}")
+    score1label.text = f"{score1}"
+    score2label.text = f"{score2}"
     time.sleep(.01)
+    fullscreentilegrid.hidden = bouncecounter > 0
+    bouncecounter -= 1
 
 # time.sleep(.5)
 # spi.deinit()
