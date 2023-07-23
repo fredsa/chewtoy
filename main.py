@@ -16,6 +16,11 @@ print("-------------------------------------BEGIN-------------------------------
 print(adafruit_datetime.datetime.now().isoformat())
 print("-------------------------------------BEGIN-------------------------------------")
 
+# https://www.adafruit.com/product/5348
+# Adafruit QT Py ESP32-S2 WiFi Dev Board with uFL Antenna Port - STEMMA QT
+# Identifies as:
+#     Adafruit QT Py ESP32-S2
+
 # 1.3" OLED display GME12864-82    | Adafruit QT Py ESP32S2 with ESP32S2
 #   1 GND -                        | GND
 #   2 VDD -                        | 3V
