@@ -16,6 +16,15 @@ print("-------------------------------------BEGIN-------------------------------
 print(adafruit_datetime.datetime.now().isoformat())
 print("-------------------------------------BEGIN-------------------------------------")
 
+# 1.3" OLED display GME12864-82    | Adafruit QT Py ESP32S2 with ESP32S2
+#   1 GND -                        | GND
+#   2 VDD -                        | 3V
+#   3 SCK - SPI Clock              | SCK
+#   4 SDA - SPI submodule in       | MO
+#   5 RES - Reset                  | A2
+#   6 DC  - Command                | A0
+#   7 CS  - Chip Select            | A1
+
 # 1.3" OLED display GME12864-82
 # 128x64 white, SH1106 controller
 # Similar to https://www.aliexpress.com/item/3256801425708937.html
